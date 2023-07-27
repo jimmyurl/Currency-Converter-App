@@ -55,7 +55,7 @@ const CurrencyConverter = () => {
   return (
     <div>
       <div className="">
-        <div className="brand-title">CURRENCY CONVERTER.</div>
+        <div className="brand-title">FOREIGN EXCHANGE RATES.</div>
         <div className="inputs">
           <input
             type="text"
