@@ -13,3 +13,4 @@ Here's how the app works:
 8. The converted amount is then displayed in the "Conversion Result" section, showing the converted amount and the target currency.
 
 Overall, this app provides a user-friendly interface for converting currencies, and it dynamically updates the conversion as the user interacts with the input fields. It's a practical tool for anyone who needs to quickly convert amounts between different currencies. To decorate the app, I've added some styling from https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap 
+![exchange](https://github.com/jimmyurl/Currency-Converter-App/assets/33938444/2e0ef1fb-7098-45da-8405-0e92858b23f1)
