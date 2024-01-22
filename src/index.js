@@ -13,7 +13,7 @@ const CurrencyConverter = () => {
   const getRate = (firstCurrency, secondCurrency) => {
     axios({
       method: "GET",
-      url: `https://free.currconv.com/api/v7/convert?q=${firstCurrency}_${secondCurrency}&compact=ultra&apiKey=7d5bee81f017549632c5`
+      url: `https://free.currconv.com/api/v7/convert?q=${firstCurrency}_${secondCurrency}&compact=ultra&apiKey=da16fc97221dfb6e875c`
     })
       .then((response) => {
         setRate(response.data);
