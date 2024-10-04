@@ -53,7 +53,6 @@ body {
   display: flex;
   justify-content: center;
 }
-/* Your existing CSS rules */
 
 .conversion-result {
   margin-top: 10px;
@@ -132,4 +131,4 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
-}    
+}
