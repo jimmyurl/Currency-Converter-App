@@ -52,7 +52,6 @@ const CurrencyConverter = () => {
           onChange={(e) => setSecond(e.target.value)}
         />
         <button onClick={() => getRate(first, second)}>Convert</button>
-       
       </div>
     </div>
   );
