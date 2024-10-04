@@ -6,84 +6,111 @@ import "./styles.css";
 const CurrencyConverter = () => {
   const [first, setFirst] = useState("USD");
   const [second, setSecond] = useState("TZS");
+  const [amount, setAmount] = useState("1");
   const [rate, setRate] = useState({});
-  const [amount, setAmount] = useState("1"); // New state for the amount to convert
-  const [convertedAmount, setConvertedAmount] = useState("0"); // New state for the converted amount
+  const [convertedAmount, setConvertedAmount] = useState("0");
 
+  // Predefined list of currencies
+  const currencies = [
+    "USD",
+    "TZS",
+    "EUR",
+    "GBP",
+    "KES",
+    "UGX",
+    "JPY",
+    "CNY",
+    "AUD",
+    "CAD",
+    // Add more currencies as needed
+  ];
+
+  // Fetch exchange rate from API
   const getRate = (firstCurrency, secondCurrency) => {
-    axios({
-      method: "GET",
-      url: `https://free.currconv.com/api/v7/convert?q=${firstCurrency}_${secondCurrency}&compact=ultra&apiKey=0ecb19b82fbf6c3e1979`
-    })
+    axios
+      .get(
+        `https://free.currconv.com/api/v7/convert?q=${firstCurrency}_${secondCurrency}&compact=ultra&apiKey=0ecb19b82fbf6c3e1979`
+      )
       .then((response) => {
         setRate(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error fetching the exchange rate:", error);
         setRate({});
       });
   };
 
+  // Fetch rate when currencies change
   useEffect(() => {
     getRate(first, second);
   }, [first, second]);
 
+  // Automatically convert when rate or amount changes
   useEffect(() => {
-    convert(); // Automatically convert when the rate or amount changes
+    convert();
   }, [rate, amount]);
 
   const convert = () => {
-    const rateValue = rate[`${first}_${second}`];
+    const rateKey = `${first}_${second}`;
+    const rateValue = rate[rateKey];
     if (!isNaN(rateValue) && amount !== "") {
-      const convertedAmount = parseFloat(rateValue) * parseFloat(amount);
-      setConvertedAmount(convertedAmount.toFixed(2));
+      const converted = parseFloat(rateValue) * parseFloat(amount);
+      setConvertedAmount(converted.toFixed(2));
     } else {
       setConvertedAmount("0");
     }
   };
 
-  const handleConvert = () => {
-    convert(); // Trigger currency conversion
-  };
-
-  const handleSwitch = () => {
-    const temp = first;
+  const switchCurrencies = () => {
     setFirst(second);
-    setSecond(temp);
+    setSecond(first);
   };
 
   return (
-    <div>
-      <div className="">
-        <div className="brand-title">FOREIGN EXCHANGE RATES.</div>
-        <div className="inputs">
-          <input
-            type="text"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Enter amount"
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            value={first}
-            onChange={(e) => setFirst(e.target.value)}
-            placeholder="Enter source currency code"
-          />
-        </div>
-        <div className="inputs">
-          <input
-            type="text"
-            value={second}
-            onChange={(e) => setSecond(e.target.value)}
-            placeholder="Enter target currency code"
-          />
-        </div>
-        <button onClick={handleSwitch}>Switch</button>
-        <button onClick={handleConvert}>Convert</button>{" "}
-        {/* Added Convert button */}
+    <div className="container">
+      <div className="brand-logo"></div>
+      <div className="brand-title">FOREIGN EXCHANGE RATES</div>
+      <div className="inputs">
+        <label htmlFor="amount">Amount:</label>
+        <input
+          type="number"
+          id="amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Enter amount"
+          min="0"
+        />
       </div>
+      <div className="inputs">
+        <label htmlFor="from-currency">From:</label>
+        <select
+          id="from-currency"
+          value={first}
+          onChange={(e) => setFirst(e.target.value)}
+        >
+          {currencies.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="inputs">
+        <label htmlFor="to-currency">To:</label>
+        <select
+          id="to-currency"
+          value={second}
+          onChange={(e) => setSecond(e.target.value)}
+        >
+          {currencies.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
+        </select>
+      </div>
+      <button onClick={switchCurrencies}>Switch</button>
+
       {rate[`${first}_${second}`] && (
         <div className="conversion-result">
           {parseFloat(amount).toLocaleString("en-US")} {first} ={" "}

@@ -5,8 +5,11 @@ import "./styles.css";
 const CurrencyConverter = () => {
   const [first, setFirst] = useState("USD");
   const [second, setSecond] = useState("TZS");
+  const [amount, setAmount] = useState(1);
   const [rate, setRate] = useState({});
   const [isCurrencySwitched, setIsCurrencySwitched] = useState(false);
+
+  const currencies = ["USD", "TZS", "EUR", "GBP", "KES", "UGX"]; // Add more currencies as needed
 
   const getRate = (firstCurrency, secondCurrency) => {
     axios({
@@ -36,22 +39,43 @@ const CurrencyConverter = () => {
     <div>
       <h1 className="heading">Currency Converter</h1>
       <div className="currency-converter">
-        <div className="conversion-result">
-          1 {isCurrencySwitched ? second : first} = {rate[`${first}_${second}`]}{" "}
+        <div className="conversion-result" style={{ color: "red" }}>
+          {amount} {isCurrencySwitched ? second : first} ={" "}
+          {rate[`${first}_${second}`]
+            ? (rate[`${first}_${second}`] * amount).toFixed(2)
+            : "Error"}{" "}
           {isCurrencySwitched ? first : second}
         </div>
         <br />
+
         <input
-          type="text"
-          value={isCurrencySwitched ? second : first}
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+
+        <select
+          value={first}
           onChange={(e) => setFirst(e.target.value)}
-        />
-        <input
-          type="text"
-          value={isCurrencySwitched ? first : second}
+        >
+          {currencies.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={second}
           onChange={(e) => setSecond(e.target.value)}
-        />
-        <button onClick={() => getRate(first, second)}>Convert</button>
+        >
+          {currencies.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
+        </select>
+
         <button onClick={switchCurrencies}>Switch</button>
       </div>
     </div>
